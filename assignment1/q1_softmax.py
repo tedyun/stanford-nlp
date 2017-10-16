@@ -32,7 +32,6 @@ def softmax(x):
         # Matrix
         ### YOUR CODE HERE
         
-        # substract each row by its maximum for numeric stability
         x = np.apply_along_axis(softmax, 1, x)
         
         ### END YOUR CODE
