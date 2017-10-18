@@ -75,7 +75,7 @@ def test_sigmoid():
     print "Running your tests..."
     ### YOUR CODE HERE
     
-    # TODO
+    print("TODO: test_sigmoid")
 
     ### END YOUR CODE
 
