@@ -36,7 +36,17 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    raise NotImplementedError
+    
+    # Activation at the hidden layer
+    M = data.shape[0]
+    A1 = sigmoid(np.dot(data, W1) + b1)
+    assert A1.shape == (M, H)
+
+    # Cost
+    Yhat = softmax(np.dot(A1, W2) + b2)
+    assert Yhat.shape == (M, Dy)
+    cost = - np.sum(labels * np.log(Yhat)) / M
+    
     ### END YOUR CODE
 
     ### YOUR CODE HERE: backward propagation
@@ -80,7 +90,7 @@ def your_sanity_checks():
     """
     print "Running your sanity checks..."
     ### YOUR CODE HERE
-    raise NotImplementedError
+    print("TODO: your_sanity_checks")
     ### END YOUR CODE
 
 
