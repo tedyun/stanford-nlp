@@ -26,7 +26,8 @@ def forward_backward_prop(data, labels, params, dimensions):
     ### Unpack network parameters (do not modify)
     ofs = 0
     Dx, H, Dy = (dimensions[0], dimensions[1], dimensions[2])
-
+    #print(params)
+    #print(params[ofs:ofs+ Dx * H])
     W1 = np.reshape(params[ofs:ofs+ Dx * H], (Dx, H))
     ofs += Dx * H
     b1 = np.reshape(params[ofs:ofs + H], (1, H))
@@ -39,7 +40,8 @@ def forward_backward_prop(data, labels, params, dimensions):
     
     # Activation at the hidden layer
     M = data.shape[0]
-    A1 = sigmoid(np.dot(data, W1) + b1)
+    Z1 = np.dot(data, W1) + b1
+    A1 = sigmoid(Z1)
     assert A1.shape == (M, H)
 
     # Cost
@@ -50,7 +52,20 @@ def forward_backward_prop(data, labels, params, dimensions):
     ### END YOUR CODE
 
     ### YOUR CODE HERE: backward propagation
-    raise NotImplementedError
+    gradZ2 = Yhat - labels
+    assert gradZ2.shape == (M, Dy)
+    gradW2 = np.dot(A1.T, gradZ2) / M
+    assert gradW2.shape == W2.shape
+    gradb2 = np.sum(gradZ2, axis = 0, keepdims = True) / M
+    assert gradb2.shape == b2.shape
+    gradA1 = np.dot(gradZ2, W2.T)
+    assert gradA1.shape == (M, H)
+    gradZ1 = gradA1 * sigmoid_grad(A1)
+    assert gradZ1.shape == (M, H)
+    gradW1 = np.dot(data.T, gradZ1) / M
+    assert gradW1.shape == W1.shape
+    gradb1 = np.sum(gradZ1, axis = 0, keepdims = True) / M
+    assert gradb1.shape == b1.shape
     ### END YOUR CODE
 
     ### Stack gradients (do not modify)

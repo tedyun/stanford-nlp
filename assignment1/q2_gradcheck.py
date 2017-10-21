@@ -21,6 +21,7 @@ def gradcheck_naive(f, x):
 
     # Iterate over all indexes in x
     it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
+    print("gradcheck x: ", x)
     while not it.finished:
         ix = it.multi_index
 
@@ -30,10 +31,12 @@ def gradcheck_naive(f, x):
         # to test cost functions with built in randomness later.
 
         ### YOUR CODE HERE:
+        increment = np.zeros(x.shape)
+        increment[ix] = h
         random.setstate(rndstate)
-        incr_val, _ = f(x[ix] + h)
+        incr_val, _ = f(x + increment)
         random.setstate(rndstate)
-        val, _ = f(x[ix] - h)
+        val, _ = f(x - increment)
         numgrad = (incr_val - val) / h / 2
         ### END YOUR CODE
 
